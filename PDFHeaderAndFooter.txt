@@ -74,14 +74,18 @@
         </style>
     </head>
 
+    <p style="color: red;">
+        {!$Label.EOP_Firstpage_Footer}
+    </p>
+
     <table class="table table-condensed">
         <tbody>
             <tr>
                 <th>VIN Number</th>
                 <th>Year</th>
                 <th>Make</th>
-                <th>Model</th>
-                <th>Odometer</th>
+                <th>{!$Label.Model}</th>
+                <th>{!$Label.Vehicle_Odometer}</th>
             </tr>
             <tr>
                 <td>{!case.VIN__c}</td>
@@ -93,14 +97,24 @@
         </tbody>
     </table>
     <apex:pageBlock >
-        <p><strong><left>Table Name</left></strong></p><br/>
-        <apex:pageBlocktable value="{!rentelTowingBenfitLst}" var="objectReference">
-            <apex:column value="{!objectReference.Name}"/>
-            <apex:column value="{!objectReference.Type__c}"/>
-            <apex:column value="{!objectReference.Approved_Service}"/>
-            <apex:column headerValue="Paid total" value="{!IF(objectReference.Rental_Paid__c != null,objectReference.Rental_Paid__c,IF(objectReference.Towing_Paid__c != null,
-                                objectReference.Towing_Paid__c,IF(objectReference.Paid_Benefits_Amount__c !=null,objectReference.Paid_Benefits_Amount__c,'')))}"/>
-        </apex:pageBlockTable>
+        <div style = "{!IF((partsList.size > 0), 'display:block', 'display:none')}"> 
+            <p><strong><left>Table Name</left></strong></p><br/>
+            <apex:pageBlocktable value="{!rentelTowingBenfitLst}" var="objectReference" width="22cm">
+                <apex:column value="{!objectReference.Name}"/>
+                <apex:column value="{!objectReference.Type__c}"/>
+                <apex:column value="{!objectReference.Approved_Service}"/>
+                <apex:column headerValue="Paid total" value="{!IF(objectReference.Rental_Paid__c != null,objectReference.Rental_Paid__c,IF(objectReference.Towing_Paid__c != null,
+                                    objectReference.Towing_Paid__c,IF(objectReference.Paid_Benefits_Amount__c !=null,objectReference.Paid_Benefits_Amount__c,'')))}"/>
+                <apex:Column headerValue="{!$Label.Approved_Total}"><apex:outputText value="{!IF(rowData.Dealer_Service_Type__c == delaerServiceTypeMenuPriceItems,
+                                    rowData.Auth_Menu_Price_Amount__c,rowData.FIN_Auth_Labor_Charge__c)}"></apex:outputText></apex:Column>
+            </apex:pageBlockTable>
+            <table>
+                <tr>
+                    <th style = "border:1px solid #000000; border-right:0; width:19.5cm;">{!$Label.Total_Parts_Price_USD} </th>
+                    <td style = "border:1px solid #000000; width:2.35cm;">{!totalPaidPartsAmountRepairService}</td>
+                </tr>
+            </table>
+        </div>
     </apex:pageBlock>
 
 
@@ -130,7 +144,6 @@
 
         </apex:outputPanel>
     </apex:component>    -->
-
 
 
     <!-- Stylesheets -->
@@ -163,6 +176,5 @@
     <c:PDFHeadFoot type="footer" position="left">Second Left Footer Text</c:PDFHeadFoot>
     <c:PDFHeadFoot type="footer" position="center">Second Center Footer Text</c:PDFHeadFoot>
     <c:PDFHeadFoot type="footer" position="right" showPageNumbers="true"/>
-
 
 </apex:page>
